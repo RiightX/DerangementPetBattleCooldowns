@@ -1,0 +1,39 @@
+name: Package addon
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - '*'
+      - '!**-classic'
+      - '!**-rc**'
+      - "!**-alpha**"
+      - "!**-beta**"
+    paths-ignore:
+      - '.github/**'
+      - '**/README.md'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout addon
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Tree files 1
+      run: tree -pufiag -I '.git|.github|.vscode.'
+
+    - name: Package
+      uses: BigWigsMods/packager@v2
+      with:
+        args: -m pkgmeta.yaml
+      env:
+        GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Tree files 3
+      run: tree -pufiag -I '.git|.github|.vscode|scripts|src|pkgmeta.yaml|main.lua|lint.yml|duplicates.yml|.gitignore|.gitattributes|.editorconfig|CHANGELOG.md|LICENSE|README.md' .
