@@ -1,0 +1,8 @@
+---
+ignore:
+  - .gitignore
+  - .github
+  - .vscode
+  - README.md
+  - pkgmeta.yaml
+  - UI.xsd
